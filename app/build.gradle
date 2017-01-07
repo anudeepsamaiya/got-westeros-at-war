@@ -42,4 +42,5 @@ dependencies {
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 
     compile 'nl.qbusict:cupboard:2.2.0'
+
 }

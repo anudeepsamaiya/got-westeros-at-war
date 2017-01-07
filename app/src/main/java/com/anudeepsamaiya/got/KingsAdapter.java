@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.anudeepsamaiya.got.Model.KingModel;
 import com.anudeepsamaiya.got.databinding.ItemKingsLayoutBinding;
 
@@ -41,6 +44,15 @@ public class KingsAdapter extends RecyclerView.Adapter<KingsAdapter.ViewHolder> 
         holder.highestRating.setText(String.valueOf(kingModelList.get(position).getCurrentRating()));
 //        holder.battleStrength.setText(kingModelList.get(position).getName());
 
+        if (!kingModelList.get(position).getName().isEmpty()) {
+            TextDrawable drawable = TextDrawable.builder()
+                    .buildRound(kingModelList.get(position).getName().substring(0, 1),
+                            ColorGenerator.MATERIAL.getRandomColor());
+
+            holder.img.setImageDrawable(drawable);
+        }
+
+
     }
 
     @Override
@@ -50,11 +62,12 @@ public class KingsAdapter extends RecyclerView.Adapter<KingsAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView battleStrength, highestRating, name;
+        ImageView img;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             ItemKingsLayoutBinding binding = DataBindingUtil.getBinding(itemView);
-//            binding.imgKing;
+            img = binding.imgKing;
             battleStrength = binding.textBattleStrength;
             highestRating = binding.textHighestRating;
             name = binding.kingName;

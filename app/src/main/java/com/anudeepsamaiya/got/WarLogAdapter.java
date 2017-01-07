@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.anudeepsamaiya.got.Model.WarLogModel;
 import com.anudeepsamaiya.got.databinding.ItemWarlogListBinding;
 
@@ -48,6 +50,17 @@ public class WarLogAdapter extends RecyclerView.Adapter<WarLogAdapter.ViewHolder
 
         holder.textAttackerKing.setText(dataset.get(position).getAttackerKing());
         holder.textDefenderKing.setText(dataset.get(position).getDefenderKing());
+
+        TextDrawable attackerDrawable = TextDrawable.builder()
+                .buildRound(dataset.get(position).getAttackerKing().substring(0, 1),
+                        ColorGenerator.MATERIAL.getRandomColor());
+
+        TextDrawable defenderDrawable = TextDrawable.builder()
+                .buildRound(dataset.get(position).getAttackerKing().substring(0, 1),
+                        ColorGenerator.MATERIAL.getRandomColor());
+
+        holder.attackerKing.setImageDrawable(attackerDrawable);
+        holder.defenderKing.setImageDrawable(defenderDrawable);
     }
 
     @Override
@@ -63,6 +76,7 @@ public class WarLogAdapter extends RecyclerView.Adapter<WarLogAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView attackerKing;
         ImageView defenderKing;
+
         TextView textAttackerKing;
         TextView textDefenderKing;
         TextView textBattleName, textBattleOutcome, textBattleLoc, textBattleYear;

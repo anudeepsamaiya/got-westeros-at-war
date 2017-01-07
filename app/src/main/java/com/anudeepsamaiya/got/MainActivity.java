@@ -179,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
         Long r11 = Double.valueOf(r1 + (K * (S1 - E1))).longValue();
         Long r22 = Double.valueOf(r2 + (K * (S2 - E2))).longValue();
 
-        attackerKing.setCurrentRating(r11);
+        attackerKing.setCurrentRating(Math.abs(r11));
         cupboard().withDatabase(db).put(attackerKing);
 
-        defenderKing.setCurrentRating(r22);
+        defenderKing.setCurrentRating(Math.abs(r22));
         cupboard().withDatabase(db).put(defenderKing);
     }
 

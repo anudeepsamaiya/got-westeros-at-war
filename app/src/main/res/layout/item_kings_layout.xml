@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/imgKing"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
                 android:layout_margin="8dp" />
 
@@ -43,7 +43,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginRight="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                tool:text="HighestRating" />
+                android:text="HighestRating" />
 
             <TextView
                 android:id="@+id/textHighestRating"
@@ -62,7 +62,7 @@
                 android:layout_below="@+id/labelHighestRating"
                 android:layout_toRightOf="@+id/labelBattleStrength"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                tool:text="Battle Strength" />
+                android:text="Battle Strength" />
 
             <TextView
                 android:id="@+id/labelBattleStrength"
