@@ -14,7 +14,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
  */
 
 /**
- * Class that wraps the most common database operations. This example assumes you want a single table and data entity
+ * Class that wraps the most common db operations. This example assumes you want a single table and data entity
  * with two properties: a title and a priority as an integer. Modify in all relevant locations if you need other/more
  * properties for your data and/or additional tables.
  */

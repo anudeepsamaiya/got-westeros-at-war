@@ -23,9 +23,9 @@ public class WarLogAdapter extends RecyclerView.Adapter<WarLogAdapter.ViewHolder
 
     WarLogAdapter(List<WarLogModel> dataset) {
         if (dataset == null)
-            this.dataset = new ArrayList<>();
-        else
-            this.dataset = dataset;
+            dataset = new ArrayList<>();
+
+        this.dataset = dataset;
     }
 
     @Override

@@ -10,6 +10,25 @@ public class KingModel {
     String Name;
     Long currentRating;
 
+    public int getBattlesWon() {
+        return battlesWon;
+    }
+
+    public void setBattlesWon(int battlesWon) {
+        this.battlesWon = battlesWon;
+    }
+
+    public int getBattlesLost() {
+        return battlesLost;
+    }
+
+    public void setBattlesLost(int battlesLost) {
+        this.battlesLost = battlesLost;
+    }
+
+    int battlesWon;
+    int battlesLost;
+
     public KingModel() {
 
     }

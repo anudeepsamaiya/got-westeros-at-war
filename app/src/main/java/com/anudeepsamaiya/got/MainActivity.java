@@ -1,13 +1,13 @@
 package com.anudeepsamaiya.got;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -49,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startNewActivity();
             }
         });
-        fab.setVisibility(View.GONE);
 
         binding.rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         final WarLogAdapter warLogAdapter = new WarLogAdapter(null);
@@ -76,14 +74,17 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<List<WarLogModel>> call, Response<List<WarLogModel>> response) {
                     try {
                         if (response.body() != null) {
+
                             List<WarLogModel> warLogModel = response.body();
                             warLogAdapter.updateDataset(warLogModel);
+                            binding.progressBar.setVisibility(View.GONE);
 
                             for (WarLogModel model : warLogModel) {
                                 cupboard().withDatabase(db).put(model);
                                 computeBaseRatings(model);
-                            }
 
+                                computeWinningStat(model);
+                            }
                             Log.d(TAG, response.body().toString());
                         } else {
                             Log.d(TAG, response.errorBody().toString());
@@ -100,14 +101,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(this, "Please check network connection & retry", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Please check network connection & retry", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void computeWinningStat(WarLogModel model) {
+
+        cupboard().withDatabase(db).query(KingModel.class).list();
+
+    }
+
+    public void startNewActivity() {
+        Intent intent = new Intent(this, KingsListActivity.class);
+        startActivity(intent);
     }
 
     public void computeBaseRatings(WarLogModel model) {
         final int K = 32;
-
         final Long r1, r2;
+        int defenderWinCount, defenderlostCount, attackerWinCount, attackerLostCount;
 
         KingModel attackerKing = cupboard().withDatabase(db)
                 .query(KingModel.class)
@@ -119,18 +131,25 @@ public class MainActivity extends AppCompatActivity {
                 .withSelection("name = ?", model.getDefenderKing())
                 .get();
 
+
         if (attackerKing == null) {
             r1 = 400L;
             attackerKing = new KingModel(model.getAttackerKing(), 400L);
+            attackerWinCount = attackerLostCount = 0;
         } else {
             r1 = attackerKing.getCurrentRating();
+            attackerWinCount = attackerKing.getBattlesWon();
+            attackerLostCount = attackerKing.getBattlesLost();
         }
 
         if (defenderKing == null) {
             r2 = 400L;
             defenderKing = new KingModel(model.getDefenderKing(), 400L);
+            defenderWinCount = defenderlostCount = 0;
         } else {
             r2 = defenderKing.getCurrentRating();
+            defenderWinCount = defenderKing.getBattlesWon();
+            defenderlostCount = defenderKing.getBattlesLost();
         }
 
         double R1 = Math.pow(10.0, r1 / 400.0);
@@ -145,16 +164,20 @@ public class MainActivity extends AppCompatActivity {
         if (model.getAttackerOutcome().equalsIgnoreCase("win")) {
             S1 = 1L;
             S2 = 0L;
+            attackerKing.setBattlesWon(attackerWinCount + 1);
+            defenderKing.setBattlesLost(defenderlostCount + 1);
         } else if (model.getAttackerOutcome().equalsIgnoreCase("loss")) {
             S1 = 0L;
             S2 = 1L;
+            attackerKing.setBattlesLost(attackerLostCount + 1);
+            defenderKing.setBattlesWon(defenderWinCount + 1);
         } else {
             S1 = 0.5;
             S2 = 0.5;
         }
 
-        Long r11 = new Double(r1 + (K * (S1 - E1))).longValue();
-        Long r22 = new Double(r2 + (K * (S2 - E2))).longValue();
+        Long r11 = Double.valueOf(r1 + (K * (S1 - E1))).longValue();
+        Long r22 = Double.valueOf(r2 + (K * (S2 - E2))).longValue();
 
         attackerKing.setCurrentRating(r11);
         cupboard().withDatabase(db).put(attackerKing);
