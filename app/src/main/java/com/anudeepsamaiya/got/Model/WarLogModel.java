@@ -1,4 +1,4 @@
-package com.anudeepsamaiya.got;
+package com.anudeepsamaiya.got.Model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class WarLogModel {
+
+    public Long _id; // for cupboard
 
     @SerializedName("name")
     @Expose

@@ -1,5 +1,7 @@
 package com.anudeepsamaiya.got;
 
+import com.anudeepsamaiya.got.Model.WarLogModel;
+
 import java.util.List;
 
 import retrofit2.Call;
