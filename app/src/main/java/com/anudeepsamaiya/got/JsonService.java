@@ -1,5 +1,7 @@
 package com.anudeepsamaiya.got;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,7 +25,7 @@ public class JsonService {
 
     public interface Westeros {
         @GET("gotjson")
-        Call<WarLogModel> getWarLog();
+        Call<List<WarLogModel>> getWarLog();
     }
 
 }

@@ -13,6 +13,8 @@ import android.view.View;
 
 import com.anudeepsamaiya.got.databinding.ActivityMainBinding;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,13 +43,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         JsonService.Westeros westeros = new JsonService().getWesteros();
-
-        westeros.getWarLog().enqueue(new Callback<WarLogModel>() {
+        westeros.getWarLog().enqueue(new Callback<List<WarLogModel>>() {
             @Override
-            public void onResponse(Call<WarLogModel> call, Response<WarLogModel> response) {
+            public void onResponse(Call<List<WarLogModel>> call, Response<List<WarLogModel>> response) {
                 try {
                     if (response.body() != null) {
-                        WarLogModel warLogModel = response.body();
+                        List<WarLogModel> warLogModel = response.body();
                         Log.d(TAG, response.body().toString());
                     } else {
                         Log.d(TAG, response.errorBody().toString());
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<WarLogModel> call, Throwable t) {
+            public void onFailure(Call<List<WarLogModel>> call, Throwable t) {
                 Log.d(TAG, t.toString());
                 t.printStackTrace();
             }
